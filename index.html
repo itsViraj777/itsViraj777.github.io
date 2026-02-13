@@ -279,17 +279,24 @@
                 <label for="department" id="lblDepartment">Department <span class="required">*</span></label>
                 <select id="department" name="department" required>
                     <option value="">Select your department</option>
-                    <option value="Production">Production</option>
-                    <option value="Quality">Quality</option>
-                    <option value="Maintenance">Maintenance</option>
-                    <option value="Engineering">Engineering</option>
-                    <option value="HR">HR</option>
-                    <option value="Finance">Finance</option>
-                    <option value="IT">IT</option>
-                    <option value="Sales & Marketing">Sales & Marketing</option>
-                    <option value="Logistics">Logistics</option>
-                    <option value="Administration">Administration</option>
-                    <option value="Other">Other</option>
+                    <option value="ZONE - A1 : STAMPING (PRESS-SHOP)">ZONE - A1 : STAMPING (PRESS-SHOP)</option>
+                    <option value="ZONE - A2 : MAINTENANCE & STORE">ZONE - A2 : MAINTENANCE & STORE</option>
+                    <option value="ZONE - A3 : TOOL ROOM & CMM">ZONE - A3 : TOOL ROOM & CMM</option>
+                    <option value="ZONE - B1 : PRODUCT ENGINEERING (P.E.)">ZONE - B1 : PRODUCT ENGINEERING (P.E.)</option>
+                    <option value="ZONE - B2 : OFFICE (SALES, MARKETING, ACCOUNTS, PURCHASE & HR)">ZONE - B2 : OFFICE (SALES, MARKETING, ACCOUNTS, PURCHASE & HR)</option>
+                    <option value="ZONE - C1 : SQA RAW MATERIAL STORE - METAL STRIP">ZONE - C1 : SQA RAW MATERIAL STORE - METAL STRIP</option>
+                    <option value="ZONE - C2 : PACKING & DISPATCH - STAMPING FINISHED GOOD STORE - STAMPING">ZONE - C2 : PACKING & DISPATCH - STAMPING FINISHED GOOD STORE - STAMPING</option>
+                    <option value="ZONE - D1 : INJECTION MOULDING - FG STORE">ZONE - D1 : INJECTION MOULDING - FG STORE</option>
+                    <option value="ZONE - D2 : SHOPFLOOR - INJECTION MOULDING IQA - INJECTION MOULDING">ZONE - D2 : SHOPFLOOR - INJECTION MOULDING IQA - INJECTION MOULDING</option>
+                    <option value="ZONE - D3 : SPARKING & WIRE CUT">ZONE - D3 : SPARKING & WIRE CUT</option>
+                    <option value="ZONE - E1 : IQA - STAMPING">ZONE - E1 : IQA - STAMPING</option>
+                    <option value="ZONE - E2 : SHOPFLOOR - STAMPING IQA - STAMPING">ZONE - E2 : SHOPFLOOR - STAMPING IQA - STAMPING</option>
+                    <option value="ZONE - F1 : ETS">ZONE - F1 : ETS</option>
+                    <option value="ZONE - F2 : WIRE CUT">ZONE - F2 : WIRE CUT</option>
+                    <option value="ZONE - G1 : TOOL MAINTENANCE">ZONE - G1 : TOOL MAINTENANCE</option>
+                    <option value="ZONE - G2 : STAMPING & DEBURRING & ASSEMBLY (PRESS-SHOP)">ZONE - G2 : STAMPING & DEBURRING & ASSEMBLY (PRESS-SHOP)</option>
+                    <option value="ZONE - G3 : WIRE CUT DESIGN & VALIDATION VISUAL INSPECTION AREA">ZONE - G3 : WIRE CUT DESIGN & VALIDATION VISUAL INSPECTION AREA</option>
+                    <option value="ZONE - G4 : VMC SORTING DEPARTMENT">ZONE - G4 : VMC SORTING DEPARTMENT</option>
                 </select>
             </div>
 
@@ -302,13 +309,12 @@
                 <label for="category" id="lblCategory">Category</label>
                 <select id="category" name="category">
                     <option value="">Select category (optional)</option>
-                    <option value="Cost Reduction">Cost Reduction</option>
-                    <option value="Quality Improvement">Quality Improvement</option>
-                    <option value="Safety">Safety</option>
-                    <option value="Productivity">Productivity</option>
-                    <option value="Environmental">Environmental</option>
-                    <option value="Workplace Organization">Workplace Organization</option>
-                    <option value="Process Improvement">Process Improvement</option>
+                    <option value="QUALITY">QUALITY</option>
+                    <option value="SAFETY">SAFETY</option>
+                    <option value="DELIVERY">DELIVERY</option>
+                    <option value="COST">COST</option>
+                    <option value="TIME">TIME</option>
+                    <option value="SYSTEM">SYSTEM</option>
                 </select>
             </div>
 
@@ -358,27 +364,33 @@
                 errorMsg: 'There was an error submitting your idea. Please try again.',
                 departments: {
                     select: 'Select your department',
-                    production: 'Production',
-                    quality: 'Quality',
-                    maintenance: 'Maintenance',
-                    engineering: 'Engineering',
-                    hr: 'HR',
-                    finance: 'Finance',
-                    it: 'IT',
-                    sales: 'Sales & Marketing',
-                    logistics: 'Logistics',
-                    administration: 'Administration',
-                    other: 'Other'
+                    zone_a1: 'ZONE - A1 : STAMPING (PRESS-SHOP)',
+                    zone_a2: 'ZONE - A2 : MAINTENANCE & STORE',
+                    zone_a3: 'ZONE - A3 : TOOL ROOM & CMM',
+                    zone_b1: 'ZONE - B1 : PRODUCT ENGINEERING (P.E.)',
+                    zone_b2: 'ZONE - B2 : OFFICE (SALES, MARKETING, ACCOUNTS, PURCHASE & HR)',
+                    zone_c1: 'ZONE - C1 : SQA RAW MATERIAL STORE - METAL STRIP',
+                    zone_c2: 'ZONE - C2 : PACKING & DISPATCH - STAMPING FINISHED GOOD STORE - STAMPING',
+                    zone_d1: 'ZONE - D1 : INJECTION MOULDING - FG STORE',
+                    zone_d2: 'ZONE - D2 : SHOPFLOOR - INJECTION MOULDING IQA - INJECTION MOULDING',
+                    zone_d3: 'ZONE - D3 : SPARKING & WIRE CUT',
+                    zone_e1: 'ZONE - E1 : IQA - STAMPING',
+                    zone_e2: 'ZONE - E2 : SHOPFLOOR - STAMPING IQA - STAMPING',
+                    zone_f1: 'ZONE - F1 : ETS',
+                    zone_f2: 'ZONE - F2 : WIRE CUT',
+                    zone_g1: 'ZONE - G1 : TOOL MAINTENANCE',
+                    zone_g2: 'ZONE - G2 : STAMPING & DEBURRING & ASSEMBLY (PRESS-SHOP)',
+                    zone_g3: 'ZONE - G3 : WIRE CUT DESIGN & VALIDATION VISUAL INSPECTION AREA',
+                    zone_g4: 'ZONE - G4 : VMC SORTING DEPARTMENT'
                 },
                 categories: {
                     select: 'Select category (optional)',
-                    cost: 'Cost Reduction',
-                    quality: 'Quality Improvement',
-                    safety: 'Safety',
-                    productivity: 'Productivity',
-                    environmental: 'Environmental',
-                    workplace: 'Workplace Organization',
-                    process: 'Process Improvement'
+                    quality: 'QUALITY',
+                    safety: 'SAFETY',
+                    delivery: 'DELIVERY',
+                    cost: 'COST',
+                    time: 'TIME',
+                    system: 'SYSTEM'
                 }
             },
             hi: {
@@ -406,27 +418,33 @@
                 errorMsg: 'आपका विचार सबमिट करने में त्रुटि हुई। कृपया पुनः प्रयास करें।',
                 departments: {
                     select: 'अपना विभाग चुनें',
-                    production: 'उत्पादन',
-                    quality: 'गुणवत्ता',
-                    maintenance: 'रखरखाव',
-                    engineering: 'इंजीनियरिंग',
-                    hr: 'मानव संसाधन',
-                    finance: 'वित्त',
-                    it: 'आईटी',
-                    sales: 'बिक्री और विपणन',
-                    logistics: 'रसद',
-                    administration: 'प्रशासन',
-                    other: 'अन्य'
+                    zone_a1: 'ZONE - A1 : STAMPING (PRESS-SHOP)',
+                    zone_a2: 'ZONE - A2 : MAINTENANCE & STORE',
+                    zone_a3: 'ZONE - A3 : TOOL ROOM & CMM',
+                    zone_b1: 'ZONE - B1 : PRODUCT ENGINEERING (P.E.)',
+                    zone_b2: 'ZONE - B2 : OFFICE (SALES, MARKETING, ACCOUNTS, PURCHASE & HR)',
+                    zone_c1: 'ZONE - C1 : SQA RAW MATERIAL STORE - METAL STRIP',
+                    zone_c2: 'ZONE - C2 : PACKING & DISPATCH - STAMPING FINISHED GOOD STORE - STAMPING',
+                    zone_d1: 'ZONE - D1 : INJECTION MOULDING - FG STORE',
+                    zone_d2: 'ZONE - D2 : SHOPFLOOR - INJECTION MOULDING IQA - INJECTION MOULDING',
+                    zone_d3: 'ZONE - D3 : SPARKING & WIRE CUT',
+                    zone_e1: 'ZONE - E1 : IQA - STAMPING',
+                    zone_e2: 'ZONE - E2 : SHOPFLOOR - STAMPING IQA - STAMPING',
+                    zone_f1: 'ZONE - F1 : ETS',
+                    zone_f2: 'ZONE - F2 : WIRE CUT',
+                    zone_g1: 'ZONE - G1 : TOOL MAINTENANCE',
+                    zone_g2: 'ZONE - G2 : STAMPING & DEBURRING & ASSEMBLY (PRESS-SHOP)',
+                    zone_g3: 'ZONE - G3 : WIRE CUT DESIGN & VALIDATION VISUAL INSPECTION AREA',
+                    zone_g4: 'ZONE - G4 : VMC SORTING DEPARTMENT'
                 },
                 categories: {
                     select: 'श्रेणी चुनें (वैकल्पिक)',
-                    cost: 'लागत में कमी',
-                    quality: 'गुणवत्ता सुधार',
-                    safety: 'सुरक्षा',
-                    productivity: 'उत्पादकता',
-                    environmental: 'पर्यावरण',
-                    workplace: 'कार्यस्थल संगठन',
-                    process: 'प्रक्रिया सुधार'
+                    quality: 'गुणवत्ता (QUALITY)',
+                    safety: 'सुरक्षा (SAFETY)',
+                    delivery: 'डिलीवरी (DELIVERY)',
+                    cost: 'लागत (COST)',
+                    time: 'समय (TIME)',
+                    system: 'सिस्टम (SYSTEM)'
                 }
             }
         };
@@ -465,28 +483,34 @@
             // Update department dropdown
             const deptSelect = document.getElementById('department');
             deptSelect.options[0].text = t.departments.select;
-            deptSelect.options[1].text = t.departments.production;
-            deptSelect.options[2].text = t.departments.quality;
-            deptSelect.options[3].text = t.departments.maintenance;
-            deptSelect.options[4].text = t.departments.engineering;
-            deptSelect.options[5].text = t.departments.hr;
-            deptSelect.options[6].text = t.departments.finance;
-            deptSelect.options[7].text = t.departments.it;
-            deptSelect.options[8].text = t.departments.sales;
-            deptSelect.options[9].text = t.departments.logistics;
-            deptSelect.options[10].text = t.departments.administration;
-            deptSelect.options[11].text = t.departments.other;
+            deptSelect.options[1].text = t.departments.zone_a1;
+            deptSelect.options[2].text = t.departments.zone_a2;
+            deptSelect.options[3].text = t.departments.zone_a3;
+            deptSelect.options[4].text = t.departments.zone_b1;
+            deptSelect.options[5].text = t.departments.zone_b2;
+            deptSelect.options[6].text = t.departments.zone_c1;
+            deptSelect.options[7].text = t.departments.zone_c2;
+            deptSelect.options[8].text = t.departments.zone_d1;
+            deptSelect.options[9].text = t.departments.zone_d2;
+            deptSelect.options[10].text = t.departments.zone_d3;
+            deptSelect.options[11].text = t.departments.zone_e1;
+            deptSelect.options[12].text = t.departments.zone_e2;
+            deptSelect.options[13].text = t.departments.zone_f1;
+            deptSelect.options[14].text = t.departments.zone_f2;
+            deptSelect.options[15].text = t.departments.zone_g1;
+            deptSelect.options[16].text = t.departments.zone_g2;
+            deptSelect.options[17].text = t.departments.zone_g3;
+            deptSelect.options[18].text = t.departments.zone_g4;
 
             // Update category dropdown
             const catSelect = document.getElementById('category');
             catSelect.options[0].text = t.categories.select;
-            catSelect.options[1].text = t.categories.cost;
-            catSelect.options[2].text = t.categories.quality;
-            catSelect.options[3].text = t.categories.safety;
-            catSelect.options[4].text = t.categories.productivity;
-            catSelect.options[5].text = t.categories.environmental;
-            catSelect.options[6].text = t.categories.workplace;
-            catSelect.options[7].text = t.categories.process;
+            catSelect.options[1].text = t.categories.quality;
+            catSelect.options[2].text = t.categories.safety;
+            catSelect.options[3].text = t.categories.delivery;
+            catSelect.options[4].text = t.categories.cost;
+            catSelect.options[5].text = t.categories.time;
+            catSelect.options[6].text = t.categories.system;
 
             // Update loading text
             const loadingText = document.querySelector('#loading p');
