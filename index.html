@@ -469,9 +469,139 @@
                 height: 120px;
             }
         }
+
+        /* Full-screen loading overlay */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+        }
+        .loading-overlay.active {
+            display: flex;
+        }
+        .loading-overlay .overlay-spinner {
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid #fff;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            animation: spin 0.9s linear infinite;
+        }
+        .loading-overlay p {
+            color: #fff;
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Success modal */
+        .success-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .success-modal.active {
+            display: flex;
+        }
+        .success-modal-box {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 36px;
+            text-align: center;
+            max-width: 380px;
+            width: 100%;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn {
+            from { transform: scale(0.7); opacity: 0; }
+            to   { transform: scale(1);   opacity: 1; }
+        }
+        .success-modal-box .check-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+        }
+        .success-modal-box h2 {
+            color: #1e7e34;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        .success-modal-box p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+        .success-modal-box .ok-btn {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 40px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .success-modal-box .ok-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(196,30,58,0.4);
+        }
+
+        /* Phone input */
+        input[type="tel"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+        input[type="tel"]:focus {
+            outline: none;
+            border-color: #c41e3a;
+        }
+        @media screen and (max-width: 768px) {
+            input[type="tel"] { padding: 10px 14px; font-size: 16px; }
+        }
     </style>
 </head>
 <body>
+    <!-- Full-screen loading overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="overlay-spinner"></div>
+        <p id="overlayText">Submitting your Kaizen...</p>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-modal-box">
+            <div class="check-circle">✓</div>
+            <h2 id="successTitle">Kaizen Submitted Successfully!</h2>
+            <p id="successDesc">Thank you for your valuable idea. Your Kaizen has been recorded and will be reviewed by the team.</p>
+            <button class="ok-btn" onclick="closeSuccessModal()" id="successOkBtn">OK</button>
+        </div>
+    </div>
+
     <div class="container">
         <div class="logo-container">
             <img src="preview.jpeg" alt="Connect & Grow Logo">
@@ -493,6 +623,11 @@
             <div class="form-group">
                 <label for="name" id="lblName">Full Name <span class="required">*</span></label>
                 <input type="text" id="name" name="name" required placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label for="mobile" id="lblMobile">Mobile Number <span class="required">*</span></label>
+                <input type="tel" id="mobile" name="mobile" required placeholder="Enter your 10-digit mobile number" maxlength="10" pattern="[0-9]{10}">
             </div>
 
             <div class="form-group">
@@ -611,6 +746,8 @@
                 subtitle: 'Share your continuous improvement ideas',
                 lblName: 'Full Name',
                 namePlaceholder: 'Enter your full name',
+                lblMobile: 'Mobile Number',
+                mobilePlaceholder: 'Enter your 10-digit mobile number',
                 lblProvideEmail: 'Do you want to provide your email?',
                 lblEmail: 'Email',
                 emailPlaceholder: 'your.email@company.com',
@@ -633,6 +770,10 @@
                 submitBtn: 'Submit Idea',
                 submitting: 'Submitting...',
                 successMsg: 'Success! Your Kaizen idea has been submitted.',
+                successModalTitle: 'Kaizen Submitted Successfully!',
+                successModalDesc: 'Thank you for your valuable idea. Your Kaizen has been recorded and will be reviewed by the team.',
+                successOkBtn: 'OK',
+                mobileError: 'Please enter a valid 10-digit mobile number.',
                 errorMsg: 'There was an error submitting your idea. Please try again.',
                 departments: {
                     select: 'Select your department',
@@ -670,6 +811,8 @@
                 subtitle: 'अपने निरंतर सुधार विचार साझा करें',
                 lblName: 'पूरा नाम',
                 namePlaceholder: 'अपना पूरा नाम दर्ज करें',
+                lblMobile: 'मोबाइल नंबर',
+                mobilePlaceholder: '10 अंकों का मोबाइल नंबर दर्ज करें',
                 lblProvideEmail: 'क्या आप अपना ईमेल प्रदान करना चाहते हैं?',
                 lblEmail: 'ईमेल',
                 emailPlaceholder: 'आपका.ईमेल@कंपनी.com',
@@ -692,6 +835,10 @@
                 submitBtn: 'विचार जमा करें',
                 submitting: 'जमा किया जा रहा है...',
                 successMsg: 'सफलता! आपका काइज़न विचार सबमिट कर दिया गया है।',
+                successModalTitle: 'काइज़न सफलतापूर्वक सबमिट हो गया!',
+                successModalDesc: 'आपके मूल्यवान विचार के लिए धन्यवाद। आपका काइज़न दर्ज कर लिया गया है और टीम द्वारा समीक्षा की जाएगी।',
+                successOkBtn: 'ठीक है',
+                mobileError: 'कृपया एक वैध 10 अंकों का मोबाइल नंबर दर्ज करें।',
                 errorMsg: 'आपका विचार सबमिट करने में त्रुटि हुई। कृपया पुनः प्रयास करें।',
                 departments: {
                     select: 'अपना विभाग चुनें',
@@ -739,6 +886,8 @@
             document.getElementById('subtitle').textContent = t.subtitle;
             document.getElementById('lblName').innerHTML = t.lblName + ' <span class="required">*</span>';
             document.getElementById('name').placeholder = t.namePlaceholder;
+            document.getElementById('lblMobile').innerHTML = t.lblMobile + ' <span class="required">*</span>';
+            document.getElementById('mobile').placeholder = t.mobilePlaceholder;
             document.getElementById('lblProvideEmail').textContent = t.lblProvideEmail;
             document.getElementById('lblEmail').textContent = t.lblEmail;
             document.getElementById('email').placeholder = t.emailPlaceholder;
@@ -846,27 +995,42 @@
             const files = Array.from(event.target.files);
             const t = translations[currentLanguage];
             
-            // Check if adding these files would exceed the limit
             if (uploadedPhotos.length + files.length > MAX_PHOTOS) {
                 alert(t.photoMax || `Maximum ${MAX_PHOTOS} photos allowed`);
-                event.target.value = ''; // Clear the input
+                event.target.value = '';
                 return;
             }
             
             files.forEach(file => {
                 if (uploadedPhotos.length < MAX_PHOTOS) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const photoData = {
-                            base64: e.target.result,
-                            name: file.name
-                        };
-                        
+                    compressImage(file, 800, 0.72).then(compressedBase64 => {
+                        const photoData = { base64: compressedBase64, name: file.name };
                         uploadedPhotos.push(photoData);
                         updatePhotoGrid();
-                    };
-                    reader.readAsDataURL(file);
+                    });
                 }
+            });
+        }
+
+        function compressImage(file, maxSize, quality) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        let w = img.width, h = img.height;
+                        if (w > maxSize || h > maxSize) {
+                            if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
+                            else       { w = Math.round(w * maxSize / h); h = maxSize; }
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = w; canvas.height = h;
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
             });
         }
 
@@ -907,15 +1071,27 @@
             updatePhotoGrid();
         }
 
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const t = translations[currentLanguage];
 
-            // Get form data
+            // Validate mobile number
+            const mobile = document.getElementById('mobile').value.trim();
+            if (!/^[0-9]{10}$/.test(mobile)) {
+                alert(t.mobileError || 'Please enter a valid 10-digit mobile number.');
+                document.getElementById('mobile').focus();
+                return;
+            }
+
             const formData = {
                 timestamp: new Date().toLocaleString(),
                 name: document.getElementById('name').value.trim(),
+                mobile: mobile,
                 email: document.getElementById('email').value.trim() || 'Not provided',
                 employeeId: document.getElementById('employeeId').value.trim() || 'Not provided',
                 department: document.getElementById('department').value,
@@ -924,37 +1100,42 @@
                 photos: uploadedPhotos.length > 0 ? uploadedPhotos : [{ base64: 'No photo attached', name: 'none' }]
             };
 
-            // Show loading
+            // Show full-screen loading overlay
+            const overlay = document.getElementById('loadingOverlay');
+            document.getElementById('overlayText').textContent = t.submitting || 'Submitting your Kaizen...';
+            overlay.classList.add('active');
             submitBtn.disabled = true;
-            submitBtn.textContent = t.submitting;
-            loading.classList.add('active');
             message.style.display = 'none';
 
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
 
-                // Since we're using no-cors, we can't read the response
-                // We'll assume success if no error was thrown
-                showMessage(t.successMsg, 'success');
+                // Show success modal
+                overlay.classList.remove('active');
+                document.getElementById('successTitle').textContent = t.successModalTitle || 'Kaizen Submitted Successfully!';
+                document.getElementById('successDesc').textContent = t.successModalDesc || 'Thank you for your valuable idea. Your Kaizen has been recorded and will be reviewed by the team.';
+                document.getElementById('successOkBtn').textContent = t.successOkBtn || 'OK';
+                document.getElementById('successModal').classList.add('active');
+
+                // Reset form
                 form.reset();
-                // Reset optional fields
+                uploadedPhotos = [];
+                updatePhotoGrid();
                 toggleOptionalField('email', false);
                 toggleOptionalField('employeeId', false);
                 toggleOptionalField('photo', false);
 
             } catch (error) {
                 console.error('Error:', error);
+                overlay.classList.remove('active');
                 showMessage(t.errorMsg, 'error');
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = t.submitBtn;
                 loading.classList.remove('active');
             }
         });
