@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaizen Idea Submission</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -24,41 +20,83 @@
         .container {
             background: white;
             border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 600px;
             width: 100%;
             padding: 40px;
         }
 
-        .logo-container {
-            text-align: center;
+        .logo-container { text-align: center; margin-bottom: 20px; }
+        .logo-container img { max-width: 200px; height: auto; }
+
+        .header { text-align: center; margin-bottom: 24px; }
+        .header h1 { color: #c41e3a; font-size: 28px; margin-bottom: 8px; }
+        .header p { color: #666; font-size: 14px; }
+
+        /* Language toggle */
+        .language-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
             margin-bottom: 20px;
         }
-
-        .logo-container img {
-            max-width: 200px;
-            height: auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
+        .lang-btn {
+            padding: 10px 24px;
+            border: 2px solid #c41e3a;
+            background: white;
             color: #c41e3a;
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            color: #666;
+            border-radius: 8px;
             font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
         }
+        .lang-btn.active {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+            color: white;
+        }
+        .lang-btn:hover { transform: translateY(-2px); }
 
-        .form-group {
+
+        /* Plant selection */
+        .plant-selection {
             margin-bottom: 24px;
+            padding: 16px;
+            background: #fff5f5;
+            border: 2px solid #c41e3a;
+            border-radius: 10px;
         }
+        .plant-selection label {
+            display: block;
+            font-weight: 700;
+            color: #c41e3a;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .plant-btns {
+            display: flex;
+            gap: 10px;
+        }
+        .plant-btn {
+            flex: 1;
+            padding: 12px 10px;
+            border: 2px solid #c41e3a;
+            background: white;
+            color: #c41e3a;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .plant-btn.active {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+            color: white;
+        }
+        .plant-btn:hover { transform: translateY(-2px); }
+
+        .form-group { margin-bottom: 24px; }
 
         label {
             display: block;
@@ -70,6 +108,7 @@
 
         input[type="text"],
         input[type="email"],
+        input[type="tel"],
         select,
         textarea {
             width: 100%;
@@ -80,24 +119,16 @@
             transition: border-color 0.3s;
             font-family: inherit;
         }
-
         input[type="text"]:focus,
         input[type="email"]:focus,
+        input[type="tel"]:focus,
         select:focus,
         textarea:focus {
             outline: none;
             border-color: #c41e3a;
         }
-
-        textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        select {
-            cursor: pointer;
-            background-color: white;
-        }
+        textarea { resize: vertical; min-height: 120px; }
+        select { cursor: pointer; background-color: white; }
 
         .submit-btn {
             width: 100%;
@@ -111,21 +142,9 @@
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
         }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(196, 30, 58, 0.4);
-        }
-
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-
-        .submit-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(196,30,58,0.4); }
+        .submit-btn:active { transform: translateY(0); }
+        .submit-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
 
         .message {
             padding: 12px 16px;
@@ -134,90 +153,27 @@
             display: none;
             font-size: 14px;
         }
+        .message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
 
-        .message.success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
+        .required { color: #c41e3a; }
 
-        .message.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .required {
-            color: #c41e3a;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .loading.active {
-            display: block;
-        }
-
+        .loading { display: none; text-align: center; margin-top: 10px; }
+        .loading.active { display: block; }
         .spinner {
             border: 3px solid #f3f3f3;
             border-top: 3px solid #c41e3a;
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 30px; height: 30px;
             animation: spin 1s linear infinite;
             margin: 0 auto;
         }
+        @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .optional-field { display: none; }
+        .optional-field.show { display: block; }
 
-        .language-toggle {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-
-        .lang-btn {
-            padding: 10px 24px;
-            border: 2px solid #c41e3a;
-            background: white;
-            color: #c41e3a;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .lang-btn.active {
-            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
-            color: white;
-        }
-
-        .lang-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .optional-field {
-            display: none;
-        }
-
-        .optional-field.show {
-            display: block;
-        }
-
-        .yes-no-toggle {
-            display: flex;
-            gap: 10px;
-            margin-top: 8px;
-        }
-
+        .yes-no-toggle { display: flex; gap: 10px; margin-top: 8px; }
         .toggle-btn {
             padding: 8px 20px;
             border: 2px solid #e0e0e0;
@@ -227,28 +183,12 @@
             font-size: 14px;
             transition: all 0.3s;
         }
+        .toggle-btn.active { border-color: #c41e3a; background: #c41e3a; color: white; }
+        .toggle-btn:hover { border-color: #c41e3a; }
 
-        .toggle-btn.active {
-            border-color: #c41e3a;
-            background: #c41e3a;
-            color: white;
-        }
-
-        .toggle-btn:hover {
-            border-color: #c41e3a;
-        }
-
-        .photo-upload-section {
-            margin-top: 10px;
-        }
-
-        .file-input-wrapper {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-            width: 100%;
-        }
-
+        /* Photo upload */
+        .photo-upload-section { margin-top: 10px; }
+        .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; }
         .file-input-btn {
             display: flex;
             align-items: center;
@@ -265,212 +205,33 @@
             font-size: 14px;
             font-weight: 500;
         }
-
-        .file-input-btn:hover {
-            background: #ffe0e0;
-            border-color: #8b0000;
-        }
-
-        .file-input-wrapper input[type=file] {
-            position: absolute;
-            left: -9999px;
-        }
-
-        .photo-preview {
-            margin-top: 12px;
-            display: none;
-        }
-
-        .photo-preview.show {
-            display: block;
-        }
-
-        .preview-container {
-            position: relative;
-            display: inline-block;
-            max-width: 100%;
-        }
-
-        .preview-image {
-            max-width: 100%;
-            max-height: 300px;
-            border-radius: 8px;
-            border: 2px solid #e0e0e0;
-        }
-
-        .remove-photo {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: #c41e3a;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            font-size: 18px;
-            line-height: 1;
-            transition: all 0.3s;
-        }
-
-        .remove-photo:hover {
-            background: #8b0000;
-            transform: scale(1.1);
-        }
-
-        .file-name {
-            margin-top: 8px;
-            font-size: 13px;
-            color: #666;
-        }
-
-        /* Responsive Design */
-        @media screen and (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            .container {
-                padding: 20px;
-                border-radius: 12px;
-            }
-
-            .header h1 {
-                font-size: 22px;
-            }
-
-            .header p {
-                font-size: 13px;
-            }
-
-            .logo-container img {
-                max-width: 150px;
-            }
-
-            .form-group {
-                margin-bottom: 20px;
-            }
-
-            input[type="text"],
-            input[type="email"],
-            select,
-            textarea {
-                padding: 10px 14px;
-                font-size: 16px; /* Prevents zoom on iOS */
-            }
-
-            .language-toggle {
-                flex-direction: row;
-                gap: 8px;
-            }
-
-            .lang-btn {
-                padding: 8px 20px;
-                font-size: 13px;
-            }
-
-            .yes-no-toggle {
-                flex-wrap: wrap;
-            }
-
-            .toggle-btn {
-                padding: 8px 16px;
-                font-size: 13px;
-            }
-
-            .submit-btn {
-                padding: 12px;
-                font-size: 15px;
-            }
-
-            label {
-                font-size: 13px;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .container {
-                padding: 15px;
-            }
-
-            .header h1 {
-                font-size: 20px;
-            }
-
-            .logo-container img {
-                max-width: 120px;
-            }
-
-            .language-toggle {
-                gap: 6px;
-            }
-
-            .lang-btn {
-                padding: 7px 16px;
-                font-size: 12px;
-            }
-
-            .toggle-btn {
-                flex: 1;
-                min-width: 80px;
-            }
-
-            .preview-image {
-                max-height: 200px;
-            }
-        }
-
-        /* Multiple photos styling */
+        .file-input-btn:hover { background: #ffe0e0; border-color: #8b0000; }
+        .file-input-wrapper input[type=file] { position: absolute; left: -9999px; }
         .photo-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 12px;
             margin-top: 12px;
         }
-
-        .photo-item {
-            position: relative;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .photo-item img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .photo-item .remove-photo {
+        .photo-item { position: relative; border: 2px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
+        .photo-item img { width: 100%; height: 150px; object-fit: cover; display: block; }
+        .remove-photo {
             position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 25px;
-            height: 25px;
+            top: 5px; right: 5px;
+            background: #c41e3a;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px; height: 25px;
+            cursor: pointer;
             font-size: 16px;
+            line-height: 1;
+            transition: all 0.3s;
         }
+        .remove-photo:hover { background: #8b0000; transform: scale(1.1); }
+        .photo-count { margin-top: 8px; font-size: 13px; color: #c41e3a; font-weight: 500; }
 
-        .photo-count {
-            margin-top: 8px;
-            font-size: 13px;
-            color: #c41e3a;
-            font-weight: 500;
-        }
-
-        @media screen and (max-width: 480px) {
-            .photo-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
-            }
-
-            .photo-item img {
-                height: 120px;
-            }
-        }
-
-        /* Full-screen loading overlay */
+        /* Loading overlay */
         .loading-overlay {
             display: none;
             position: fixed;
@@ -482,23 +243,15 @@
             justify-content: center;
             gap: 18px;
         }
-        .loading-overlay.active {
-            display: flex;
-        }
+        .loading-overlay.active { display: flex; }
         .loading-overlay .overlay-spinner {
             border: 5px solid rgba(255,255,255,0.3);
             border-top: 5px solid #fff;
             border-radius: 50%;
-            width: 56px;
-            height: 56px;
+            width: 56px; height: 56px;
             animation: spin 0.9s linear infinite;
         }
-        .loading-overlay p {
-            color: #fff;
-            font-size: 17px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
+        .loading-overlay p { color: #fff; font-size: 17px; font-weight: 600; letter-spacing: 0.5px; }
 
         /* Success modal */
         .success-modal {
@@ -511,9 +264,7 @@
             justify-content: center;
             padding: 20px;
         }
-        .success-modal.active {
-            display: flex;
-        }
+        .success-modal.active { display: flex; }
         .success-modal-box {
             background: white;
             border-radius: 20px;
@@ -522,15 +273,11 @@
             max-width: 380px;
             width: 100%;
             box-shadow: 0 24px 60px rgba(0,0,0,0.3);
-            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: popIn 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
         }
-        @keyframes popIn {
-            from { transform: scale(0.7); opacity: 0; }
-            to   { transform: scale(1);   opacity: 1; }
-        }
+        @keyframes popIn { from{transform:scale(0.7);opacity:0} to{transform:scale(1);opacity:1} }
         .success-modal-box .check-circle {
-            width: 80px;
-            height: 80px;
+            width: 80px; height: 80px;
             background: linear-gradient(135deg, #28a745, #1e7e34);
             border-radius: 50%;
             display: flex;
@@ -539,17 +286,8 @@
             margin: 0 auto 20px;
             font-size: 40px;
         }
-        .success-modal-box h2 {
-            color: #1e7e34;
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-        .success-modal-box p {
-            color: #555;
-            font-size: 14px;
-            margin-bottom: 28px;
-            line-height: 1.6;
-        }
+        .success-modal-box h2 { color: #1e7e34; font-size: 22px; margin-bottom: 10px; }
+        .success-modal-box p { color: #555; font-size: 14px; margin-bottom: 28px; line-height: 1.6; }
         .success-modal-box .ok-btn {
             background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
             color: white;
@@ -561,32 +299,38 @@
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
         }
-        .success-modal-box .ok-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 18px rgba(196,30,58,0.4);
-        }
+        .success-modal-box .ok-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(196,30,58,0.4); }
 
-        /* Phone input */
-        input[type="tel"] {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-            font-family: inherit;
-        }
-        input[type="tel"]:focus {
-            outline: none;
-            border-color: #c41e3a;
-        }
+        /* Responsive */
         @media screen and (max-width: 768px) {
-            input[type="tel"] { padding: 10px 14px; font-size: 16px; }
+            body { padding: 10px; }
+            .container { padding: 20px; border-radius: 12px; }
+            .header h1 { font-size: 22px; }
+            .header p { font-size: 13px; }
+            .logo-container img { max-width: 150px; }
+            .form-group { margin-bottom: 20px; }
+            input[type="text"], input[type="email"], input[type="tel"], select, textarea { padding: 10px 14px; font-size: 16px; }
+            .lang-btn { padding: 8px 20px; font-size: 13px; }
+            .yes-no-toggle { flex-wrap: wrap; }
+            .toggle-btn { padding: 8px 16px; font-size: 13px; }
+            .submit-btn { padding: 12px; font-size: 15px; }
+            label { font-size: 13px; }
+            .plant-btn { font-size: 13px; padding: 10px 8px; }
+        }
+        @media screen and (max-width: 480px) {
+            .container { padding: 15px; }
+            .header h1 { font-size: 20px; }
+            .logo-container img { max-width: 120px; }
+            .toggle-btn { flex: 1; min-width: 80px; }
+            .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .photo-item img { height: 120px; }
+            .plant-btns { flex-direction: column; }
         }
     </style>
 </head>
 <body>
-    <!-- Full-screen loading overlay -->
+
+    <!-- Loading overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="overlay-spinner"></div>
         <p id="overlayText">Submitting your Kaizen...</p>
@@ -604,17 +348,27 @@
 
     <div class="container">
         <div class="logo-container">
-            <img src="preview.jpeg" alt="Connect & Grow Logo">
+            <img src="preview.jpeg" alt="Company Logo">
         </div>
-        
+
         <div class="header">
             <h1 id="mainTitle">💡 Kaizen Idea Submission</h1>
             <p id="subtitle">Share your continuous improvement ideas</p>
         </div>
 
+        <!-- Language Toggle -->
         <div class="language-toggle">
             <button type="button" class="lang-btn active" onclick="setLanguage('en')" id="btnEnglish">English</button>
             <button type="button" class="lang-btn" onclick="setLanguage('hi')" id="btnHindi">हिंदी</button>
+        </div>
+
+        <!-- Plant Selection (compulsory) -->
+        <div class="plant-selection">
+            <label id="lblPlant">🏭 Select Plant <span class="required">*</span></label>
+            <div class="plant-btns">
+                <button type="button" class="plant-btn" onclick="selectPlant('vasai')" id="btnVasai">Vasai Plant</button>
+                <button type="button" class="plant-btn" onclick="selectPlant('kaman')" id="btnKaman">Kaman Plant</button>
+            </div>
         </div>
 
         <div id="message" class="message"></div>
@@ -637,7 +391,6 @@
                     <button type="button" class="toggle-btn active" onclick="toggleOptionalField('email', false)" id="btnEmailNo">No</button>
                 </div>
             </div>
-
             <div class="form-group optional-field" id="emailField">
                 <label for="email" id="lblEmail">Email</label>
                 <input type="email" id="email" name="email" placeholder="your.email@company.com">
@@ -650,34 +403,15 @@
                     <button type="button" class="toggle-btn active" onclick="toggleOptionalField('employeeId', false)" id="btnEmpIdNo">No</button>
                 </div>
             </div>
-
             <div class="form-group optional-field" id="employeeIdField">
                 <label for="employeeId" id="lblEmployeeId">Employee ID</label>
                 <input type="text" id="employeeId" name="employeeId" placeholder="Enter your employee ID">
             </div>
 
             <div class="form-group">
-                <label for="department" id="lblDepartment">Department <span class="required">*</span></label>
+                <label for="department" id="lblDepartment">Department / Zone <span class="required">*</span></label>
                 <select id="department" name="department" required>
                     <option value="">Select your department</option>
-                    <option value="ZONE - A1 : STAMPING (PRESS-SHOP)">ZONE - A1 : STAMPING (PRESS-SHOP)</option>
-                    <option value="ZONE - A2 : MAINTENANCE & STORE">ZONE - A2 : MAINTENANCE & STORE</option>
-                    <option value="ZONE - A3 : TOOL ROOM & CMM">ZONE - A3 : TOOL ROOM & CMM</option>
-                    <option value="ZONE - B1 : PRODUCT ENGINEERING (P.E.)">ZONE - B1 : PRODUCT ENGINEERING (P.E.)</option>
-                    <option value="ZONE - B2 : OFFICE (SALES, MARKETING, ACCOUNTS, PURCHASE & HR)">ZONE - B2 : OFFICE (SALES, MARKETING, ACCOUNTS, PURCHASE & HR)</option>
-                    <option value="ZONE - C1 : SQA RAW MATERIAL STORE - METAL STRIP">ZONE - C1 : SQA RAW MATERIAL STORE - METAL STRIP</option>
-                    <option value="ZONE - C2 : PACKING & DISPATCH - STAMPING FINISHED GOOD STORE - STAMPING">ZONE - C2 : PACKING & DISPATCH - STAMPING FINISHED GOOD STORE - STAMPING</option>
-                    <option value="ZONE - D1 : INJECTION MOULDING - FG STORE">ZONE - D1 : INJECTION MOULDING - FG STORE</option>
-                    <option value="ZONE - D2 : SHOPFLOOR - INJECTION MOULDING IQA - INJECTION MOULDING">ZONE - D2 : SHOPFLOOR - INJECTION MOULDING IQA - INJECTION MOULDING</option>
-                    <option value="ZONE - D3 : SPARKING & WIRE CUT">ZONE - D3 : SPARKING & WIRE CUT</option>
-                    <option value="ZONE - E1 : IQA - STAMPING">ZONE - E1 : IQA - STAMPING</option>
-                    <option value="ZONE - E2 : SHOPFLOOR - STAMPING IQA - STAMPING">ZONE - E2 : SHOPFLOOR - STAMPING IQA - STAMPING</option>
-                    <option value="ZONE - F1 : ETS">ZONE - F1 : ETS</option>
-                    <option value="ZONE - F2 : WIRE CUT">ZONE - F2 : WIRE CUT</option>
-                    <option value="ZONE - G1 : TOOL MAINTENANCE">ZONE - G1 : TOOL MAINTENANCE</option>
-                    <option value="ZONE - G2 : STAMPING & DEBURRING & ASSEMBLY (PRESS-SHOP)">ZONE - G2 : STAMPING & DEBURRING & ASSEMBLY (PRESS-SHOP)</option>
-                    <option value="ZONE - G3 : WIRE CUT DESIGN & VALIDATION VISUAL INSPECTION AREA">ZONE - G3 : WIRE CUT DESIGN & VALIDATION VISUAL INSPECTION AREA</option>
-                    <option value="ZONE - G4 : VMC SORTING DEPARTMENT">ZONE - G4 : VMC SORTING DEPARTMENT</option>
                 </select>
             </div>
 
@@ -700,18 +434,17 @@
             </div>
 
             <div class="form-group">
-                <label id="lblProvidePhoto">Do you want to attach a photo?</label>
+                <label id="lblProvidePhoto">Do you want to attach photos?</label>
                 <div class="yes-no-toggle">
                     <button type="button" class="toggle-btn" onclick="toggleOptionalField('photo', true)" id="btnPhotoYes">Yes</button>
                     <button type="button" class="toggle-btn active" onclick="toggleOptionalField('photo', false)" id="btnPhotoNo">No</button>
                 </div>
             </div>
-
             <div class="form-group optional-field photo-upload-section" id="photoField">
                 <label for="photo" id="lblPhoto">Upload Photos (Max 5)</label>
                 <div class="file-input-wrapper">
                     <label for="photo" class="file-input-btn">
-                        <span id="photoIcon">📷</span>
+                        <span>📷</span>
                         <span id="photoText">Choose Photos</span>
                     </label>
                     <input type="file" id="photo" name="photo" accept="image/*" multiple onchange="handlePhotoUpload(event)">
@@ -720,12 +453,12 @@
                 <div class="photo-grid" id="photoGrid"></div>
             </div>
 
-            <button type="submit" class="submit-btn" id="submitBtn">Submit Idea</button>
-            
             <div class="loading" id="loading">
                 <div class="spinner"></div>
-                <p style="margin-top: 10px; color: #666;">Submitting...</p>
+                <p style="margin-top:10px;color:#666;">Submitting...</p>
             </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">Submit Idea</button>
         </form>
     </div>
 
@@ -738,12 +471,43 @@
         const message = document.getElementById('message');
 
         let currentLanguage = 'en';
+        let currentPlant = null; // 'vasai' or 'kaman'
 
-        // Language translations
+        // ── Zone lists ────────────────────────────────────────────────
+        const vasaiZones = [
+            { value: 'ZONE - A1 : STAMPING (PRESS-SHOP)',                                                                       label: 'ZONE - A1 : STAMPING (PRESS-SHOP)' },
+            { value: 'ZONE - A2 : MAINTENANCE & STORE',                                                                         label: 'ZONE - A2 : MAINTENANCE & STORE' },
+            { value: 'ZONE - A3 : TOOL ROOM & CMM TOOL MAINTENANCE',                                                            label: 'ZONE - A3 : TOOL ROOM & CMM TOOL MAINTENANCE' },
+            { value: 'ZONE - B1 : PRODUCT ENGINEERING (P.E.)',                                                                   label: 'ZONE - B1 : PRODUCT ENGINEERING (P.E.)' },
+            { value: 'ZONE - B2 : OFFICE (SALES, MARKETING, ACCOUNTS, PURCHASE & HR)',                                          label: 'ZONE - B2 : OFFICE (SALES, MARKETING, ACCOUNTS, PURCHASE & HR)' },
+            { value: 'ZONE - C1 : SQA RAW MATERIAL STORE - METAL STRIP',                                                        label: 'ZONE - C1 : SQA RAW MATERIAL STORE - METAL STRIP' },
+            { value: 'ZONE - C2 : PACKING & DISPATCH - STAMPING FINISHED GOOD STORE - STAMPING',                                label: 'ZONE - C2 : PACKING & DISPATCH - STAMPING FINISHED GOOD STORE - STAMPING' },
+            { value: 'ZONE - D1 : INJECTION MOULDING - FG STORE',                                                               label: 'ZONE - D1 : INJECTION MOULDING - FG STORE' },
+            { value: 'ZONE - D2 : SHOPFLOOR - INJECTION MOULDING / IQA - INJECTION MOULDING / ETS - INJECTION MOULDING',       label: 'ZONE - D2 : SHOPFLOOR - INJECTION MOULDING / IQA - INJECTION MOULDING / ETS - INJECTION MOULDING' },
+            { value: 'ZONE - E1 : IQA - STAMPING',                                                                              label: 'ZONE - E1 : IQA - STAMPING' },
+            { value: 'ZONE - E2 : IQA - STAMPING & PRODUCTION STAMPING',                                                        label: 'ZONE - E2 : IQA - STAMPING & PRODUCTION STAMPING' },
+            { value: 'ZONE - F1 : SPARKING & WIRE CUT',                                                                         label: 'ZONE - F1 : SPARKING & WIRE CUT' },
+            { value: 'ZONE - F2 : VMC SORTING DEPARTMENT',                                                                      label: 'ZONE - F2 : VMC SORTING DEPARTMENT' }
+        ];
+
+        const kamanZones = [
+            { value: 'ZONE - A1 : PRODUCTION - STAMPING',                                                      label: 'ZONE - A1 : PRODUCTION - STAMPING' },
+            { value: 'ZONE - A2 : RAW MATERIAL STORE / INPROCESS QUALITY ASSURANCE',                           label: 'ZONE - A2 : RAW MATERIAL STORE / INPROCESS QUALITY ASSURANCE' },
+            { value: 'ZONE - A3 : TOOL MAINTENANCE & VERTICAL MACHINING CENTER',                               label: 'ZONE - A3 : TOOL MAINTENANCE & VERTICAL MACHINING CENTER' },
+            { value: 'ZONE - A4 : FINISH GOOD STORE DISPATCH AREA',                                            label: 'ZONE - A4 : FINISH GOOD STORE DISPATCH AREA' },
+            { value: 'ZONE - A5 : MACHINE MAINTENANCE',                                                        label: 'ZONE - A5 : MACHINE MAINTENANCE' },
+            { value: 'ZONE - B1 : OFFICE (HR, RECEPTION, PURCHASE, ACCOUNTS, SALES & MARKETING)',              label: 'ZONE - B1 : OFFICE (HR, RECEPTION, PURCHASE, ACCOUNTS, SALES & MARKETING)' },
+            { value: 'ZONE - C1 : WIRE CUT / CMM',                                                             label: 'ZONE - C1 : WIRE CUT / CMM' },
+            { value: 'ZONE - C2 : SPARKING / TOOL ROOM',                                                       label: 'ZONE - C2 : SPARKING / TOOL ROOM' },
+            { value: 'ZONE - C3 : SPM',                                                                        label: 'ZONE - C3 : SPM' }
+        ];
+
+        // ── Translations ──────────────────────────────────────────────
         const translations = {
             en: {
                 mainTitle: '💡 Kaizen Idea Submission',
                 subtitle: 'Share your continuous improvement ideas',
+                lblPlant: '🏭 Select Plant',
                 lblName: 'Full Name',
                 namePlaceholder: 'Enter your full name',
                 lblMobile: 'Mobile Number',
@@ -754,7 +518,7 @@
                 lblProvideEmpId: 'Do you want to provide your Employee ID?',
                 lblEmployeeId: 'Employee ID',
                 empIdPlaceholder: 'Enter your employee ID',
-                lblDepartment: 'Department',
+                lblDepartment: 'Department / Zone',
                 deptPlaceholder: 'Select your department',
                 lblKaizenIdea: 'Kaizen Idea',
                 ideaPlaceholder: 'Describe your improvement idea in detail...',
@@ -769,46 +533,22 @@
                 btnNo: 'No',
                 submitBtn: 'Submit Idea',
                 submitting: 'Submitting...',
-                successMsg: 'Success! Your Kaizen idea has been submitted.',
                 successModalTitle: 'Kaizen Submitted Successfully!',
                 successModalDesc: 'Thank you for your valuable idea. Your Kaizen has been recorded and will be reviewed by the team.',
                 successOkBtn: 'OK',
                 mobileError: 'Please enter a valid 10-digit mobile number.',
+                plantError: 'Please select a plant before submitting.',
                 errorMsg: 'There was an error submitting your idea. Please try again.',
-                departments: {
-                    select: 'Select your department',
-                    zone_a1: 'ZONE - A1 : STAMPING (PRESS-SHOP)',
-                    zone_a2: 'ZONE - A2 : MAINTENANCE & STORE',
-                    zone_a3: 'ZONE - A3 : TOOL ROOM & CMM',
-                    zone_b1: 'ZONE - B1 : PRODUCT ENGINEERING (P.E.)',
-                    zone_b2: 'ZONE - B2 : OFFICE (SALES, MARKETING, ACCOUNTS, PURCHASE & HR)',
-                    zone_c1: 'ZONE - C1 : SQA RAW MATERIAL STORE - METAL STRIP',
-                    zone_c2: 'ZONE - C2 : PACKING & DISPATCH - STAMPING FINISHED GOOD STORE - STAMPING',
-                    zone_d1: 'ZONE - D1 : INJECTION MOULDING - FG STORE',
-                    zone_d2: 'ZONE - D2 : SHOPFLOOR - INJECTION MOULDING IQA - INJECTION MOULDING',
-                    zone_d3: 'ZONE - D3 : SPARKING & WIRE CUT',
-                    zone_e1: 'ZONE - E1 : IQA - STAMPING',
-                    zone_e2: 'ZONE - E2 : SHOPFLOOR - STAMPING IQA - STAMPING',
-                    zone_f1: 'ZONE - F1 : ETS',
-                    zone_f2: 'ZONE - F2 : WIRE CUT',
-                    zone_g1: 'ZONE - G1 : TOOL MAINTENANCE',
-                    zone_g2: 'ZONE - G2 : STAMPING & DEBURRING & ASSEMBLY (PRESS-SHOP)',
-                    zone_g3: 'ZONE - G3 : WIRE CUT DESIGN & VALIDATION VISUAL INSPECTION AREA',
-                    zone_g4: 'ZONE - G4 : VMC SORTING DEPARTMENT'
-                },
                 categories: {
                     select: 'Select category (optional)',
-                    quality: 'QUALITY',
-                    safety: 'SAFETY',
-                    delivery: 'DELIVERY',
-                    cost: 'COST',
-                    time: 'TIME',
-                    system: 'SYSTEM'
+                    quality: 'QUALITY', safety: 'SAFETY', delivery: 'DELIVERY',
+                    cost: 'COST', time: 'TIME', system: 'SYSTEM'
                 }
             },
             hi: {
                 mainTitle: '💡 काइज़न विचार सबमिशन',
                 subtitle: 'अपने निरंतर सुधार विचार साझा करें',
+                lblPlant: '🏭 प्लांट चुनें',
                 lblName: 'पूरा नाम',
                 namePlaceholder: 'अपना पूरा नाम दर्ज करें',
                 lblMobile: 'मोबाइल नंबर',
@@ -819,7 +559,7 @@
                 lblProvideEmpId: 'क्या आप अपनी कर्मचारी आईडी प्रदान करना चाहते हैं?',
                 lblEmployeeId: 'कर्मचारी आईडी',
                 empIdPlaceholder: 'अपनी कर्मचारी आईडी दर्ज करें',
-                lblDepartment: 'विभाग',
+                lblDepartment: 'विभाग / ज़ोन',
                 deptPlaceholder: 'अपना विभाग चुनें',
                 lblKaizenIdea: 'काइज़न विचार',
                 ideaPlaceholder: 'अपने सुधार विचार का विस्तार से वर्णन करें...',
@@ -834,56 +574,54 @@
                 btnNo: 'नहीं',
                 submitBtn: 'विचार जमा करें',
                 submitting: 'जमा किया जा रहा है...',
-                successMsg: 'सफलता! आपका काइज़न विचार सबमिट कर दिया गया है।',
                 successModalTitle: 'काइज़न सफलतापूर्वक सबमिट हो गया!',
                 successModalDesc: 'आपके मूल्यवान विचार के लिए धन्यवाद। आपका काइज़न दर्ज कर लिया गया है और टीम द्वारा समीक्षा की जाएगी।',
                 successOkBtn: 'ठीक है',
                 mobileError: 'कृपया एक वैध 10 अंकों का मोबाइल नंबर दर्ज करें।',
+                plantError: 'कृपया सबमिट करने से पहले एक प्लांट चुनें।',
                 errorMsg: 'आपका विचार सबमिट करने में त्रुटि हुई। कृपया पुनः प्रयास करें।',
-                departments: {
-                    select: 'अपना विभाग चुनें',
-                    zone_a1: 'ZONE - A1 : STAMPING (PRESS-SHOP)',
-                    zone_a2: 'ZONE - A2 : MAINTENANCE & STORE',
-                    zone_a3: 'ZONE - A3 : TOOL ROOM & CMM',
-                    zone_b1: 'ZONE - B1 : PRODUCT ENGINEERING (P.E.)',
-                    zone_b2: 'ZONE - B2 : OFFICE (SALES, MARKETING, ACCOUNTS, PURCHASE & HR)',
-                    zone_c1: 'ZONE - C1 : SQA RAW MATERIAL STORE - METAL STRIP',
-                    zone_c2: 'ZONE - C2 : PACKING & DISPATCH - STAMPING FINISHED GOOD STORE - STAMPING',
-                    zone_d1: 'ZONE - D1 : INJECTION MOULDING - FG STORE',
-                    zone_d2: 'ZONE - D2 : SHOPFLOOR - INJECTION MOULDING IQA - INJECTION MOULDING',
-                    zone_d3: 'ZONE - D3 : SPARKING & WIRE CUT',
-                    zone_e1: 'ZONE - E1 : IQA - STAMPING',
-                    zone_e2: 'ZONE - E2 : SHOPFLOOR - STAMPING IQA - STAMPING',
-                    zone_f1: 'ZONE - F1 : ETS',
-                    zone_f2: 'ZONE - F2 : WIRE CUT',
-                    zone_g1: 'ZONE - G1 : TOOL MAINTENANCE',
-                    zone_g2: 'ZONE - G2 : STAMPING & DEBURRING & ASSEMBLY (PRESS-SHOP)',
-                    zone_g3: 'ZONE - G3 : WIRE CUT DESIGN & VALIDATION VISUAL INSPECTION AREA',
-                    zone_g4: 'ZONE - G4 : VMC SORTING DEPARTMENT'
-                },
                 categories: {
                     select: 'श्रेणी चुनें (वैकल्पिक)',
-                    quality: 'गुणवत्ता (QUALITY)',
-                    safety: 'सुरक्षा (SAFETY)',
-                    delivery: 'डिलीवरी (DELIVERY)',
-                    cost: 'लागत (COST)',
-                    time: 'समय (TIME)',
-                    system: 'सिस्टम (SYSTEM)'
+                    quality: 'गुणवत्ता (QUALITY)', safety: 'सुरक्षा (SAFETY)',
+                    delivery: 'डिलीवरी (DELIVERY)', cost: 'लागत (COST)',
+                    time: 'समय (TIME)', system: 'सिस्टम (SYSTEM)'
                 }
             }
         };
 
+        // ── Plant selection ───────────────────────────────────────────
+        function selectPlant(plant) {
+            currentPlant = plant;
+            document.getElementById('btnVasai').classList.toggle('active', plant === 'vasai');
+            document.getElementById('btnKaman').classList.toggle('active', plant === 'kaman');
+            populateDepartments();
+        }
+
+        function populateDepartments() {
+            const deptSelect = document.getElementById('department');
+            const t = translations[currentLanguage];
+            const zones = currentPlant === 'kaman' ? kamanZones : vasaiZones;
+
+            deptSelect.innerHTML = `<option value="">${t.deptPlaceholder}</option>`;
+            zones.forEach(z => {
+                const opt = document.createElement('option');
+                opt.value = z.value;
+                opt.textContent = z.label;
+                deptSelect.appendChild(opt);
+            });
+        }
+
+        // ── Language ─────────────────────────────────────────────────
         function setLanguage(lang) {
             currentLanguage = lang;
             const t = translations[lang];
 
-            // Update button states
             document.getElementById('btnEnglish').classList.toggle('active', lang === 'en');
             document.getElementById('btnHindi').classList.toggle('active', lang === 'hi');
 
-            // Update text content
             document.getElementById('mainTitle').textContent = t.mainTitle;
             document.getElementById('subtitle').textContent = t.subtitle;
+            document.getElementById('lblPlant').innerHTML = t.lblPlant + ' <span class="required">*</span>';
             document.getElementById('lblName').innerHTML = t.lblName + ' <span class="required">*</span>';
             document.getElementById('name').placeholder = t.namePlaceholder;
             document.getElementById('lblMobile').innerHTML = t.lblMobile + ' <span class="required">*</span>';
@@ -903,7 +641,6 @@
             document.getElementById('photoText').textContent = t.photoText;
             document.getElementById('submitBtn').textContent = t.submitBtn;
 
-            // Update Yes/No buttons
             document.getElementById('btnEmailYes').textContent = t.btnYes;
             document.getElementById('btnEmailNo').textContent = t.btnNo;
             document.getElementById('btnEmpIdYes').textContent = t.btnYes;
@@ -911,101 +648,57 @@
             document.getElementById('btnPhotoYes').textContent = t.btnYes;
             document.getElementById('btnPhotoNo').textContent = t.btnNo;
 
-            // Update department dropdown
-            const deptSelect = document.getElementById('department');
-            deptSelect.options[0].text = t.departments.select;
-            deptSelect.options[1].text = t.departments.zone_a1;
-            deptSelect.options[2].text = t.departments.zone_a2;
-            deptSelect.options[3].text = t.departments.zone_a3;
-            deptSelect.options[4].text = t.departments.zone_b1;
-            deptSelect.options[5].text = t.departments.zone_b2;
-            deptSelect.options[6].text = t.departments.zone_c1;
-            deptSelect.options[7].text = t.departments.zone_c2;
-            deptSelect.options[8].text = t.departments.zone_d1;
-            deptSelect.options[9].text = t.departments.zone_d2;
-            deptSelect.options[10].text = t.departments.zone_d3;
-            deptSelect.options[11].text = t.departments.zone_e1;
-            deptSelect.options[12].text = t.departments.zone_e2;
-            deptSelect.options[13].text = t.departments.zone_f1;
-            deptSelect.options[14].text = t.departments.zone_f2;
-            deptSelect.options[15].text = t.departments.zone_g1;
-            deptSelect.options[16].text = t.departments.zone_g2;
-            deptSelect.options[17].text = t.departments.zone_g3;
-            deptSelect.options[18].text = t.departments.zone_g4;
-
-            // Update category dropdown
+            // Category dropdown
             const catSelect = document.getElementById('category');
-            catSelect.options[0].text = t.categories.select;
-            catSelect.options[1].text = t.categories.quality;
-            catSelect.options[2].text = t.categories.safety;
-            catSelect.options[3].text = t.categories.delivery;
-            catSelect.options[4].text = t.categories.cost;
-            catSelect.options[5].text = t.categories.time;
-            catSelect.options[6].text = t.categories.system;
+            const c = t.categories;
+            catSelect.options[0].text = c.select;
+            catSelect.options[1].text = c.quality;
+            catSelect.options[2].text = c.safety;
+            catSelect.options[3].text = c.delivery;
+            catSelect.options[4].text = c.cost;
+            catSelect.options[5].text = c.time;
+            catSelect.options[6].text = c.system;
 
-            // Update loading text
-            const loadingText = document.querySelector('#loading p');
-            if (loadingText) {
-                loadingText.textContent = t.submitting;
-            }
+            // Re-populate departments with same zones but updated placeholder
+            if (currentPlant) populateDepartments();
         }
 
+        // ── Optional fields ───────────────────────────────────────────
         function toggleOptionalField(fieldName, show) {
             const field = document.getElementById(fieldName + 'Field');
             const input = document.getElementById(fieldName);
-            
+
             if (show) {
                 field.classList.add('show');
-                // Update button states
-                if (fieldName === 'email') {
-                    document.getElementById('btnEmailYes').classList.add('active');
-                    document.getElementById('btnEmailNo').classList.remove('active');
-                } else if (fieldName === 'employeeId') {
-                    document.getElementById('btnEmpIdYes').classList.add('active');
-                    document.getElementById('btnEmpIdNo').classList.remove('active');
-                } else if (fieldName === 'photo') {
-                    document.getElementById('btnPhotoYes').classList.add('active');
-                    document.getElementById('btnPhotoNo').classList.remove('active');
-                }
+                if (fieldName === 'email')      { document.getElementById('btnEmailYes').classList.add('active'); document.getElementById('btnEmailNo').classList.remove('active'); }
+                else if (fieldName === 'employeeId') { document.getElementById('btnEmpIdYes').classList.add('active'); document.getElementById('btnEmpIdNo').classList.remove('active'); }
+                else if (fieldName === 'photo') { document.getElementById('btnPhotoYes').classList.add('active'); document.getElementById('btnPhotoNo').classList.remove('active'); }
             } else {
                 field.classList.remove('show');
-                if (fieldName === 'photo') {
-                    removePhoto(); // Clear photo preview
-                } else {
-                    input.value = ''; // Clear the field when hiding
-                }
-                // Update button states
-                if (fieldName === 'email') {
-                    document.getElementById('btnEmailYes').classList.remove('active');
-                    document.getElementById('btnEmailNo').classList.add('active');
-                } else if (fieldName === 'employeeId') {
-                    document.getElementById('btnEmpIdYes').classList.remove('active');
-                    document.getElementById('btnEmpIdNo').classList.add('active');
-                } else if (fieldName === 'photo') {
-                    document.getElementById('btnPhotoYes').classList.remove('active');
-                    document.getElementById('btnPhotoNo').classList.add('active');
-                }
+                if (fieldName === 'photo') removePhoto();
+                else input.value = '';
+                if (fieldName === 'email')      { document.getElementById('btnEmailYes').classList.remove('active'); document.getElementById('btnEmailNo').classList.add('active'); }
+                else if (fieldName === 'employeeId') { document.getElementById('btnEmpIdYes').classList.remove('active'); document.getElementById('btnEmpIdNo').classList.add('active'); }
+                else if (fieldName === 'photo') { document.getElementById('btnPhotoYes').classList.remove('active'); document.getElementById('btnPhotoNo').classList.add('active'); }
             }
         }
 
-        let uploadedPhotos = []; // Array to store multiple photos
+        // ── Photo upload ──────────────────────────────────────────────
+        let uploadedPhotos = [];
         const MAX_PHOTOS = 5;
 
         function handlePhotoUpload(event) {
             const files = Array.from(event.target.files);
             const t = translations[currentLanguage];
-            
             if (uploadedPhotos.length + files.length > MAX_PHOTOS) {
-                alert(t.photoMax || `Maximum ${MAX_PHOTOS} photos allowed`);
+                alert(t.photoMax);
                 event.target.value = '';
                 return;
             }
-            
             files.forEach(file => {
                 if (uploadedPhotos.length < MAX_PHOTOS) {
-                    compressImage(file, 800, 0.72).then(compressedBase64 => {
-                        const photoData = { base64: compressedBase64, name: file.name };
-                        uploadedPhotos.push(photoData);
+                    compressImage(file, 800, 0.72).then(b64 => {
+                        uploadedPhotos.push({ base64: b64, name: file.name });
                         updatePhotoGrid();
                     });
                 }
@@ -1013,11 +706,11 @@
         }
 
         function compressImage(file, maxSize, quality) {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = e => {
                     const img = new Image();
-                    img.onload = function() {
+                    img.onload = () => {
                         let w = img.width, h = img.height;
                         if (w > maxSize || h > maxSize) {
                             if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
@@ -1038,35 +731,19 @@
             const grid = document.getElementById('photoGrid');
             const countEl = document.getElementById('photoCount');
             const t = translations[currentLanguage];
-            
             grid.innerHTML = '';
-            
             uploadedPhotos.forEach((photo, index) => {
-                const photoItem = document.createElement('div');
-                photoItem.className = 'photo-item';
-                photoItem.innerHTML = `
-                    <img src="${photo.base64}" alt="${photo.name}">
-                    <button type="button" class="remove-photo" onclick="removePhoto(${index})">×</button>
-                `;
-                grid.appendChild(photoItem);
+                const item = document.createElement('div');
+                item.className = 'photo-item';
+                item.innerHTML = `<img src="${photo.base64}" alt="${photo.name}"><button type="button" class="remove-photo" onclick="removePhoto(${index})">×</button>`;
+                grid.appendChild(item);
             });
-            
-            if (uploadedPhotos.length > 0) {
-                countEl.textContent = `${uploadedPhotos.length} ${t.photoCount || 'photos selected'}`;
-            } else {
-                countEl.textContent = '';
-            }
+            countEl.textContent = uploadedPhotos.length > 0 ? `${uploadedPhotos.length} ${t.photoCount}` : '';
         }
 
         function removePhoto(index) {
-            if (index !== undefined) {
-                // Remove specific photo
-                uploadedPhotos.splice(index, 1);
-            } else {
-                // Remove all photos
-                uploadedPhotos = [];
-            }
-            
+            if (index !== undefined) uploadedPhotos.splice(index, 1);
+            else uploadedPhotos = [];
             document.getElementById('photo').value = '';
             updatePhotoGrid();
         }
@@ -1075,34 +752,42 @@
             document.getElementById('successModal').classList.remove('active');
         }
 
-        form.addEventListener('submit', async (e) => {
+        // ── Submit ────────────────────────────────────────────────────
+        form.addEventListener('submit', async e => {
             e.preventDefault();
-
             const t = translations[currentLanguage];
 
-            // Validate mobile number
+            if (!currentPlant) {
+                alert(t.plantError);
+                return;
+            }
+
             const mobile = document.getElementById('mobile').value.trim();
             if (!/^[0-9]{10}$/.test(mobile)) {
-                alert(t.mobileError || 'Please enter a valid 10-digit mobile number.');
+                alert(t.mobileError);
                 document.getElementById('mobile').focus();
                 return;
             }
 
+            // Determine which Google Sheet tab name to use
+            const sheetName = currentPlant === 'vasai' ? 'Vasai Plant' : 'Kaman Plant';
+
             const formData = {
                 timestamp: new Date().toLocaleString(),
+                plant: sheetName,
                 name: document.getElementById('name').value.trim(),
-                mobile: mobile,
+                mobile,
                 email: document.getElementById('email').value.trim() || 'Not provided',
                 employeeId: document.getElementById('employeeId').value.trim() || 'Not provided',
                 department: document.getElementById('department').value,
                 kaizenIdea: document.getElementById('kaizenIdea').value.trim(),
                 category: document.getElementById('category').value || 'Not specified',
-                photos: uploadedPhotos.length > 0 ? uploadedPhotos : [{ base64: 'No photo attached', name: 'none' }]
+                photos: uploadedPhotos.length > 0 ? uploadedPhotos : [{ base64: 'No photo attached', name: 'none' }],
+                sheetName   // tells the Apps Script which tab to write to
             };
 
-            // Show full-screen loading overlay
             const overlay = document.getElementById('loadingOverlay');
-            document.getElementById('overlayText').textContent = t.submitting || 'Submitting your Kaizen...';
+            document.getElementById('overlayText').textContent = t.submitting;
             overlay.classList.add('active');
             submitBtn.disabled = true;
             message.style.display = 'none';
@@ -1115,20 +800,23 @@
                     body: JSON.stringify(formData)
                 });
 
-                // Show success modal
                 overlay.classList.remove('active');
-                document.getElementById('successTitle').textContent = t.successModalTitle || 'Kaizen Submitted Successfully!';
-                document.getElementById('successDesc').textContent = t.successModalDesc || 'Thank you for your valuable idea. Your Kaizen has been recorded and will be reviewed by the team.';
-                document.getElementById('successOkBtn').textContent = t.successOkBtn || 'OK';
+                document.getElementById('successTitle').textContent = t.successModalTitle;
+                document.getElementById('successDesc').textContent = t.successModalDesc;
+                document.getElementById('successOkBtn').textContent = t.successOkBtn;
                 document.getElementById('successModal').classList.add('active');
 
-                // Reset form
                 form.reset();
                 uploadedPhotos = [];
                 updatePhotoGrid();
                 toggleOptionalField('email', false);
                 toggleOptionalField('employeeId', false);
                 toggleOptionalField('photo', false);
+                // Reset plant selection
+                currentPlant = null;
+                document.getElementById('btnVasai').classList.remove('active');
+                document.getElementById('btnKaman').classList.remove('active');
+                document.getElementById('department').innerHTML = '<option value="">Select your department</option>';
 
             } catch (error) {
                 console.error('Error:', error);
@@ -1144,12 +832,7 @@
             message.textContent = text;
             message.className = `message ${type}`;
             message.style.display = 'block';
-
-            if (type === 'success') {
-                setTimeout(() => {
-                    message.style.display = 'none';
-                }, 5000);
-            }
+            if (type === 'success') setTimeout(() => { message.style.display = 'none'; }, 5000);
         }
     </script>
 </body>
