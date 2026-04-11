@@ -783,7 +783,7 @@
                 kaizenIdea: document.getElementById('kaizenIdea').value.trim(),
                 category: document.getElementById('category').value || 'Not specified',
                 photos: uploadedPhotos.length > 0 ? uploadedPhotos : [{ base64: 'No photo attached', name: 'none' }],
-                sheetName   // tells the Apps Script which tab to write to
+                sheetName   // tells the Apps Script which tab to write to — "Vasai Plant" or "Kaman Plant"
             };
 
             const overlay = document.getElementById('loadingOverlay');
@@ -791,6 +791,8 @@
             overlay.classList.add('active');
             submitBtn.disabled = true;
             message.style.display = 'none';
+
+            console.log('Submitting to sheet:', sheetName, '| formData.sheetName:', formData.sheetName);
 
             try {
                 await fetch(GOOGLE_SCRIPT_URL, {
